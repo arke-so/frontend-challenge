@@ -71,7 +71,6 @@ export class UsersApi extends runtime.BaseAPI {
   /**
    */
   async listUsers(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserSummary>> {
-    await new Promise(resolve => setTimeout(resolve, 500))
     return [
       {
         id: '1',
@@ -182,7 +181,6 @@ export class UsersApi extends runtime.BaseAPI {
     requestParameters: ShowUserRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<UserDetails> {
-    await new Promise(resolve => setTimeout(resolve, 500))
     return {
       fullName: 'John Doe',
       id: '1',
