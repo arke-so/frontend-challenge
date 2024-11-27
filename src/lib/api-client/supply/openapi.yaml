@@ -1141,8 +1141,7 @@ components:
         - default_currency
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
         name:
           type: string
         categories:
