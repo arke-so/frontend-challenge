@@ -1,0 +1,321 @@
+openapi: 3.0.2
+info:
+  title: Arke IAM API
+  version: v1
+servers:
+  - url: /api/v1
+
+tags:
+  - name: admin
+  - name: tenant
+  - name: users
+  - name: auth
+  - name: global
+
+paths:
+  "/role":
+    get:
+      operationId: listRoles
+      tags:
+        - global
+      x-echosec:
+        function: is_anonymous
+      responses:
+        200:
+          description: roles listed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  "/admin/tenant":
+    get:
+      operationId: adminListTenants
+      tags:
+        - admin
+      x-echosec:
+        function: is_super_admin
+      responses:
+        200:
+          description: returns all tenants
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/tenantsList'
+    put:
+      operationId: adminCreateTenant
+      tags:
+        - admin
+      x-echosec:
+        function: is_super_admin
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: '#/components/schemas/tenantDetails'
+      responses:
+        200:
+          description: tenant created
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/tenantDetails'
+  "/tenant":
+    get:
+      operationId: showTenant
+      tags:
+        - tenant
+      x-echosec:
+        function: can_access_tenant
+      responses:
+        200:
+          description: show tenant
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/tenantDetails'
+    put:
+      operationId: updateTenant
+      tags:
+        - tenant
+      x-echosec:
+        function: can_access_tenant
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: '#/components/schemas/tenantDetails'
+      responses:
+        200:
+          description: tenant updated
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/tenantDetails'
+  "/user":
+    get:
+      operationId: listUsers
+      tags:
+        - users
+      x-echosec:
+        function: can_access_tenant
+      responses:
+        200:
+          description: users listed
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/usersList'
+    put:
+      operationId: createUser
+      tags:
+        - users
+      x-echosec:
+        function: can_admin_tenant
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: '#/components/schemas/userCreate'
+      responses:
+        200:
+          description: user created
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/userDetails'
+
+  "/user/{userId}":
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      operationId: showUser
+      x-echosec:
+        function: can_access_tenant
+      tags:
+        - users
+      responses:
+        200:
+          description: users listed
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/userDetails'
+    put:
+      operationId: updateUser
+      x-echosec:
+        function: can_admin_tenant
+      tags:
+        - users
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: '#/components/schemas/userDetails'
+      responses:
+        200:
+          description: user updated
+    delete:
+      operationId: disableUser
+      x-echosec:
+        function_ can_admin_tenant
+      tags:
+        - users
+      responses:
+        200:
+          description: user disabled
+  "/user/{userId}/_update-password":
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      operationId: updatePassword
+      x-echosec:
+        function: can_admin_tenant
+      tags:
+        - users
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+      responses:
+        200:
+          description: password changed
+  "/login":
+    post:
+      description: url bound login
+      x-echosec:
+        function: is_anonymous
+      tags:
+        - auth
+      operationId: login
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: '#/components/schemas/login'
+      responses:
+        200:
+          description: successful login
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/access_token'
+
+components:
+  schemas:
+    login:
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    access_token:
+      required:
+        - access_token
+      properties:
+        access_token:
+          type: string
+    userSummary:
+      required:
+        - username
+        - full_name
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type : string
+        full_name:
+          type: string
+    userDetails:
+      allOf:
+        - $ref: '../../common/spec/base.yaml'
+        - $ref: '#/components/schemas/userSummary'
+        - required:
+            - roles
+          properties:
+            email:
+              type: string
+            roles:
+              type: array
+              items:
+                type: string
+    userCreate:
+      allOf:
+        - $ref: '#/components/schemas/userDetails'
+        - required:
+            - password
+          properties:
+            password:
+              type: string
+    usersList:
+      type: array
+      items:
+        $ref: '#/components/schemas/userSummary'
+    tenantSettings:
+      required:
+        - uom
+        - addresses
+        - emails
+        - vat
+      properties:
+          uom:
+            type: array
+            items:
+              type: string
+          addresses:
+            type: array
+            items:
+              $ref: '../../common/spec/addressAttr.yaml'
+          emails:
+            type: array
+            items:
+              $ref: '../../common/spec/emailAttr.yaml'
+          vat:
+            type: string
+    tenantDetails:
+      allOf:
+        - $ref: '../../common/spec/base.yaml'
+        - $ref: '#/components/schemas/tenantSummary'
+        - properties:
+            settings:
+              $ref: '#/components/schemas/tenantSettings'
+
+    tenantSummary:
+      required:
+        - name
+        - vanity
+        - enabled
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        vanity:
+          type: string
+        enabled:
+          type: boolean
+    tenantsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/tenantSummary'
