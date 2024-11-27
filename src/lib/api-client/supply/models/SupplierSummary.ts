@@ -26,7 +26,7 @@ export interface SupplierSummary {
    * @type {string}
    * @memberof SupplierSummary
    */
-  id: string
+  id: number
   /**
    *
    * @type {string}

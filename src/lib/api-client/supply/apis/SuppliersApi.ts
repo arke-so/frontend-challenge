@@ -106,7 +106,7 @@ export class SuppliersApi extends runtime.BaseAPI {
   ): Promise<Array<SupplierSummary>> {
     return [
       {
-        id: '1',
+        id: 1,
         name: 'Supplier 1',
         phone: '123456789',
         vatNo: '123456789',
@@ -120,7 +120,7 @@ export class SuppliersApi extends runtime.BaseAPI {
         ],
       },
       {
-        id: '2',
+        id: 2,
         name: 'Supplier 2',
         phone: '987654321',
         vatNo: '987654321',
@@ -138,7 +138,7 @@ export class SuppliersApi extends runtime.BaseAPI {
         ],
       },
       {
-        id: '3',
+        id: 3,
         name: 'Supplier 3',
         phone: '555666777',
         vatNo: '112233445',
@@ -152,7 +152,7 @@ export class SuppliersApi extends runtime.BaseAPI {
         ],
       },
       {
-        id: '4',
+        id: 4,
         name: 'Supplier 4',
         phone: '444555666',
         vatNo: '223344556',
@@ -170,7 +170,7 @@ export class SuppliersApi extends runtime.BaseAPI {
         ],
       },
       {
-        id: '5',
+        id: 5,
         name: 'Supplier 5',
         phone: '333222111',
         vatNo: '334455667',
@@ -184,7 +184,7 @@ export class SuppliersApi extends runtime.BaseAPI {
         ],
       },
       {
-        id: '6',
+        id: 6,
         name: 'Supplier 6',
         phone: '777888999',
         vatNo: '445566778',
@@ -198,7 +198,7 @@ export class SuppliersApi extends runtime.BaseAPI {
         ],
       },
       {
-        id: '7',
+        id: 7,
         name: 'Supplier 7',
         phone: '888999000',
         vatNo: '556677889',
@@ -216,7 +216,7 @@ export class SuppliersApi extends runtime.BaseAPI {
         ],
       },
       {
-        id: '8',
+        id: 8,
         name: 'Supplier 8',
         phone: '222111333',
         vatNo: '667788990',
@@ -230,7 +230,7 @@ export class SuppliersApi extends runtime.BaseAPI {
         ],
       },
       {
-        id: '9',
+        id: 9,
         name: 'Supplier 9',
         phone: '999888777',
         vatNo: '778899001',
@@ -244,10 +244,10 @@ export class SuppliersApi extends runtime.BaseAPI {
         ],
       },
       {
-        id: '10',
+        id: 10,
         name: 'Supplier 10',
         phone: '111222333',
-        vatNo: '889900112',
+        vatNo: '889900112ZZ',
         categories: ['category6'],
         defaultCurrency: 'CHF',
         emails: [
@@ -269,6 +269,7 @@ export class SuppliersApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<SupplierDetails> {
     return {
+      id: 1,
       name: 'Supplier 1',
       phone: '123456789',
       vatNo: '123456789',

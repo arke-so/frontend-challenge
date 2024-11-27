@@ -62,7 +62,7 @@ export interface SupplierDetails {
    * @type {string}
    * @memberof SupplierDetails
    */
-  id: string
+  id: number
   /**
    *
    * @type {string}
