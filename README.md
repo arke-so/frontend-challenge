@@ -1,8 +1,12 @@
-# Arke Frontend
+# Arke Frontend Challenge
 
 Built in [Svelte](https://svelte.dev) and [SvelteKit](https://kit.svelte.dev)
 
-## Install
+## Welcome
+
+Welcome! You can start setting up your development environment by following the below steps
+
+### 1. Install
 
 Clone the repo and install dependencies
 
@@ -10,13 +14,13 @@ Clone the repo and install dependencies
 npm install
 ```
 
-## Pull / generate API clients
+### 2. Generate API clients
 
 ```bash
 npm run generate:api
 ```
 
-## Develop
+### 3. Start the development server
 
 ```bash
 npm run dev
